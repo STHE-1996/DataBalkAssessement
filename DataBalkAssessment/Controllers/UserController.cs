@@ -1,11 +1,11 @@
-﻿using BelshezaProject.Data;
-using BelshezaProject.Models;
+﻿using DataBalkAssessment.Data;
+using DataBalkAssessment.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
-namespace BelshezaProject.Controllers
+namespace DataBalkAssessment.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,7 +19,7 @@ namespace BelshezaProject.Controllers
         }
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] User userObj)
+        public async Task<IActionResult> Authenticate([FromBody] RegisterRequest userObj)
         {
             if (userObj == null || string.IsNullOrEmpty(userObj.Email) || string.IsNullOrEmpty(userObj.Password))
                 return BadRequest();
@@ -35,22 +35,36 @@ namespace BelshezaProject.Controllers
                 Message = "Successful Login!"
             });
         }
-        [HttpPost("regiter")]
-        public async Task<IActionResult> RegisterUser([FromBody] User userObj)
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterRequest userObj)
         {
-            if(userObj == null)
+            if (userObj == null)
                 return BadRequest();
-            
-            await _authContext.users.AddAsync(userObj);
-            await _authContext.SaveChangesAsync();
-            return Ok(new
+
+            var newUser = new User
             {
-                Message = "User Registered!"
-            });
-          
+                Id = userObj.Id,
+                FirstName = userObj.FirstName,
+                LastName = userObj.LastName,
+                Email = userObj.Email,
+                Password = userObj.Password, 
+                ConfirmPassword = userObj.ConfirmPassword, 
+                Role = userObj.Role,
+                PhoneNumber = userObj.PhoneNumber,
+                ApiKey = Guid.NewGuid().ToString()
+            };
 
             
+            await _authContext.users.AddAsync(newUser);
+            await _authContext.SaveChangesAsync();
+
+            return Ok(new
+            {
+                Message = "User Registered!",
+                ApiKey = newUser.ApiKey
+            });
         }
+
 
 
 

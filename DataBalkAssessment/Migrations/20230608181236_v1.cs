@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BelshezaProject.Migrations
+namespace DataBalkAssessment.Migrations
 {
     /// <inheritdoc />
     public partial class v1 : Migration

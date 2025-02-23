@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BelshezaProject.Models
+namespace DataBalkAssessment.Models
 {
     public class User
     {
@@ -19,6 +19,8 @@ namespace BelshezaProject.Models
         public string? Role { get; set; }
 
         public string? PhoneNumber { get; set; }
-       
+
+        public string ApiKey { get; set; }
+
     }
 }

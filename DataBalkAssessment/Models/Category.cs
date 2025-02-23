@@ -2,7 +2,7 @@
 
 namespace BelshezaProject.Models
 {
-    public class Category
+    public class Task
     {
         [Key]
         public int Id { get; set; }
